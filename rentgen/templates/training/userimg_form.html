@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Send img for recognition{% endblock %}
+
+{% block content %}
+ 
+      <h2>Select img for recognition</h2>
+      
+        <form method="post" enctype="multipart/form-data" style="color: white;">
+          {% csrf_token %}
+          {{ data.form.image_file }}
+          <input type="submit" value="Upload Image">
+        </form>
+      
+        {% for img in data.recognized_imgs %}
+          <div style="color: white;"> 
+            <img src="{{ img.image_file.url }}" alt="" style="max-width: 100px;"> '{{ img.content }}' {{ img.quality|floatformat:3 }}
+          </div>
+        {% endfor %}
+      
+
+{% endblock %}

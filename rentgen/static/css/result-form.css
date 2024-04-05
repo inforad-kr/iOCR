@@ -1,0 +1,27 @@
+.result-form {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.result-form input {
+    flex-shrink: 0;
+}
+
+.result-form p {
+    display: flex;
+}
+
+.result-form p label {
+    text-align: right;
+    width: 50%;
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.result-form p select {
+    text-align: left;
+    width: 30%;
+}

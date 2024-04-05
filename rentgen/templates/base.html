@@ -1,0 +1,80 @@
+{% load static %}
+<!doctype html>
+<meta charset="utf-8">
+    <title>{% block title %}Result Database{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}"/>
+    
+  <head>
+    
+  </head>
+  <body>
+    <div class="wrapper">
+    <header class="header">
+      <div class="logo__wrapper">
+        <a href="{% url 'index' %}">
+          <img class="logo" src="{% static 'img/ocr-2-43463.jpg' %}"   alt="">
+        </a>
+      </div>
+      <a href="{% url 'index' %}">
+        <img class="logo_home" src="{% static 'img/home.png' %}"   alt="">
+      </a>
+      {% if request.user.is_authenticated %}
+        <a href="{% url 'logout' %}">
+          <button class="header__button" onclick="location.href = {% url 'logout' %};">
+            Logout
+          </button>
+        </a>
+      {% else%}
+        <a href="{% url 'login' %}">
+          <button class="header__button" onclick="location.href = {% url 'login' %};">
+            Login
+          </button>
+        </a>
+      {% endif %}
+    </header>
+    
+    
+    <hr>
+    {% block content %}
+    {% endblock %}
+    {% if page_obj.has_other_pages %}
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="pagination__item">
+          <a class="pagination__link" href="?page={{ page_obj.previous_page_number }}">&lt;</a>  
+        </li>
+        {% endif %}
+        {% for p in paginator.page_range %}
+          {% if page_obj.number == p %}
+            <li class="pagination__item">
+              <a class="pagination__link active" href="#0">{{ p }}</a>  
+            </li>
+          {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2  %}
+            <li class="pagination__item">
+                <a class="pagination__link" href="?page={{ p }}">{{ p }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+          <li class="pagination__item">
+            <a class="pagination__link" href="?page={{ page_obj.next_page_number }}">&gt;</a>  
+          </li>
+        {% endif %}  
+      </ul>
+    {% endif %}
+    </div>
+  </body>
+</html>
+<!-- 
+<li class="pagination__item">
+  <a class="pagination__link active" href="#0">1</a>  
+  </li>
+  <li class="pagination__item">
+  <a class="pagination__link" href="#0">2</a>
+  </li>
+  <li class="pagination__item">
+  <a class="pagination__link" href="#0">3</a>  
+  </li>
+  <li class="pagination__item">
+  <a class="pagination__link" href="#0">4</a>  
+  </li> -->

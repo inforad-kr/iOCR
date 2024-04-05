@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Send img for recognition{% endblock %}
+
+{% block content %}
+ 
+      <h2>Select img for recognition</h2>
+      <p class="aligncenter">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{ data.form.image_file }}
+          <input type="submit" value="Upload Image">
+      </form>
+      
+        <center>
+          <a color="white" href="{% url 'index' %}">
+            <button onclick="location.href = {% url 'index' %};">Cancel</button>
+          </a>
+        </center>
+      </p>
+      
+      <center>
+        <div class="json_white">
+            <h2>JSON Result:</h2>
+            <pre>{{ data.json_result|safe }}</pre>
+        </div>
+      </center>
+      
+      
+
+{% endblock %}

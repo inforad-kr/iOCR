@@ -1,0 +1,41 @@
+.table-list {
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-collapse: inherit;
+    border-spacing: 0;
+    border-color: inherit;
+    vertical-align: inherit;
+    text-align: left;
+    font-weight: inherit;
+    -webkit-border-horizontal-spacing: 0;
+    -webkit-border-vertical-spacing: 0;
+    
+}
+
+.table-list__td {
+    border: 1px solid #ffffff;
+}
+
+.table-list__th,
+.table-list__td,
+.table-list__td a {
+    color: #ffffff;
+    padding: 8px 15px;
+}
+
+.table-list a {
+    color: lightblue;
+    font-weight: 600;
+    padding: 0;
+}
+
+.table-list__td a {
+    text-decoration: none;
+}
+
+.table-list__th:first-of-type {
+    text-align: center;
+}

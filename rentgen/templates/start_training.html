@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Главная страница{% endblock %}
+{% block content %}
+    
+
+    {% if data.record %}
+        <div>
+            <h3 style="color: white;"> Total images for verification: {{ data.total }}</h3>
+            
+            <h3 style="color: white;">{{ data.statistic }}</h3>
+            <h3 style="color: white;">{{ data.record.parent_pic }}</h3>
+            <h3 style="color: white;">{{ data.record.content }}</h3>
+        </div>
+        <div >
+            <img class="img_file" src="{{ data.record.image_file.url }}">
+        </div>
+        <div style="color: white;">
+            <form method="post">
+                {% csrf_token %} 
+                <h4>
+                    {{ data.form.text_input.label_tag }}
+                    <input type="text" name="{{ data.form.text_input.name }}" value="{{ data.record.content }}"> 
+                </h4>
+                <h4>
+                    {{ data.form.checkbox.label_tag }} 
+                    {{ data.form.checkbox }}
+                </h4>
+                <h4>
+                    {{ data.form.unrecognizable.label_tag }}  
+                    {{ data.form.unrecognizable }}
+                </h4>
+                <input type="hidden" name="record_id" value="{{ data.record.id }}">
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+        
+    {% else%}
+        <h2>I have no records</h2>
+    {% endif %} 
+
+{% endblock %}

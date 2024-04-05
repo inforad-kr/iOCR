@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Index{% endblock %}
+{% block content %}
+
+  {% if request.user.is_authenticated %}
+    
+    <ul>
+      <li>
+        <h2>Select an action</h2>
+      </li>
+      
+      <li>
+        <center>
+          <a color="white" href="{% url 'start_training' %}">
+            <button  class="custom-btn btn-5" onclick="location.href = {% url 'start_training' %};">
+              Start training
+            </button>
+          </a>
+        </center>
+      </li>
+      
+      
+      
+      <li>
+        <center>
+          <a color="white" href="{% url 'fst_rec' %}">
+            <button  class="custom-btn btn-5" onclick="location.href = {% url 'fst_rec' %};">
+              Fast recognition
+            </button>
+          </a>
+        </center>
+      </li>
+
+      <li>
+        <center>
+          <a color="white" href="{% url 'admin:index' %}">
+            <button  class="custom-btn btn-5" onclick="location.href = {% url 'admin:index' %};">
+              Go to Admin panel
+            </button>
+          </a>
+        </center>
+      </li>
+      
+    </ul>
+    
+    
+    
+    
+  {% else%}
+    <h2>please log in</h2>
+  {% endif %}
+{% endblock %}

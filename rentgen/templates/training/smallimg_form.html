@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Send img for recognition{% endblock %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+      <h2>Select img for recognition</h2>
+      
+        <form method="post" enctype="multipart/form-data" style="color: white;">
+          {% csrf_token %}
+          {{ data.form }}
+          <input type="submit" value="Upload Image">
+        </form>
+        <div>
+        {% if data.original_filename %}
+          <h3 class="white_h3">Recordnized data for {{ data.original_filename }}</h3>
+          {% for img in data.recognized_imgs %}
+            <div style="color: white;"> 
+              <img src="{{ img.image_file.url }}" alt="" style="max-width: 100px;"> '{{ img.content }}' {{ img.quality|floatformat:3 }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        </div>
+      {% else%}
+        <h2>please log in</h2>
+      {% endif %}  
+
+{% endblock %}

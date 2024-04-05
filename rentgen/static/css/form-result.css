@@ -1,0 +1,13 @@
+.form-result {
+    display: flex;
+    justify-content: center;
+}
+
+.form-result tbody tr label {
+    color: #ffffff;
+    text-align: right;
+}
+
+.form-result tbody tr th:has(label) {
+    text-align: right;
+}
