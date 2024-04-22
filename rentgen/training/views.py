@@ -30,6 +30,8 @@ from django.db.models import Q
 import Levenshtein
 import csv
 import shutil
+from django.http import HttpResponse
+
 
 @csrf_exempt
 def recordnition_image_api(request):
@@ -46,7 +48,8 @@ def recordnition_image_api(request):
         parent_directory, original_filename = os.path.split(uploaded_image.name)
         base_name, file_extension = os.path.splitext(original_filename)
         image_array = np.array(image)
-        result = reader.readtext(image_array, detail=1)
+        # result = reader.readtext(image_array, detail=1)
+        result = reader.readtext(image_array, detail=1, allowlist='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-')
         count = 0
         recognized_imgs = [] 
         
@@ -63,7 +66,11 @@ def recordnition_image_api(request):
         json_result = json.dumps(result_dict, indent=4, cls=NumpyEncoder)
         print(time.time() - time1)
         # return JsonResponse({'message': 'Image uploaded successfully.'})
-        return JsonResponse(json_result, safe=False)
+        #return JsonResponse(json_result, safe=False)
+        #return JsonResponse(json_result, safe=False, json_dumps_params={'ensure_ascii': False})
+        return HttpResponse(json_result, content_type="application/json")
+
+
     else:
         return JsonResponse({'message': 'Image upload failed.'}, status=400)
 
@@ -131,6 +138,8 @@ class NumpyEncoder(JSONEncoder):
     def default(self, obj):
         if isinstance(obj, np.int64):
             return int(obj)
+        if isinstance(obj, np.int32):
+            return int(obj)
         return super(NumpyEncoder, self).default(obj)
     
 
@@ -180,7 +189,7 @@ def fst_rec(request):
                 new_record.image_file.save(new_filename, ContentFile(buffer.getvalue()), save=False)
                 new_record.quality = res[2]
                 new_record.content = res[1]
-                # new_record.save()
+                new_record.save()
                 recognized_imgs.append(new_record)
             
             data = {
@@ -397,7 +406,7 @@ def start_training(request):
     queryset = SmallImg.objects.filter(checked=False)
     print(len(queryset))
     record = queryset.first()
-    print(record.parent_pic)
+    # print(record.parent_pic)
 
     filter_condition = Q(unrecognizable=False) & Q(checked=True) 
     records = SmallImg.objects.filter(filter_condition)
@@ -414,6 +423,8 @@ def start_training(request):
         formatted_percentage = "{:.3f}".format(percentage)
         str1 = 'Total processed characters: ' + str(total) + ', misstakes: ' + str(misstakes) +  '; --- misstakes in %: ' + formatted_percentage
         print(str1)
+    else:
+        str1 = "I don't have picture in database"
 
     data = {
         'statistic' : str1,
