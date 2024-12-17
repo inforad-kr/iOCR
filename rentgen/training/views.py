@@ -36,15 +36,15 @@ from django.http import HttpResponse
 @csrf_exempt
 def recordnition_image_api(request):
     time1 = time.time()
-    if request.method == 'POST' and request.FILES.get('image'):
-        uploaded_image = request.FILES['image']
+    if request.method == 'POST' and request.FILES.get('file'):
+        uploaded_image = request.FILES['file']
         file_format = os.path.splitext(uploaded_image.name)[-1].lower()
         if file_format.startswith('.'):
             file_format = file_format[1:]
         if not file_format == 'jpg':
             return render(request,'training/error_page.html') 
         image = Image.open(uploaded_image)
-        user_img = UserImg(image_file=request.FILES['image'])
+        user_img = UserImg(image_file=request.FILES['file'])
         parent_directory, original_filename = os.path.split(uploaded_image.name)
         base_name, file_extension = os.path.splitext(original_filename)
         image_array = np.array(image)
@@ -77,15 +77,15 @@ def recordnition_image_api(request):
 @csrf_exempt
 def upload_image_api(request):
     time1 = time.time()
-    if request.method == 'POST' and request.FILES.get('image'):
-        uploaded_image = request.FILES['image']
+    if request.method == 'POST' and request.FILES.get('file'):
+        uploaded_image = request.FILES['file']
         file_format = os.path.splitext(uploaded_image.name)[-1].lower()
         if file_format.startswith('.'):
             file_format = file_format[1:]
         if not file_format == 'jpg':
             return render(request,'training/error_page.html') 
         image = Image.open(uploaded_image)
-        user_img = UserImg(image_file=request.FILES['image'])
+        user_img = UserImg(image_file=request.FILES['file'])
         parent_directory, original_filename = os.path.split(uploaded_image.name)
         base_name, file_extension = os.path.splitext(original_filename)
         image_array = np.array(image)
