@@ -11,5 +11,5 @@ urlpatterns = [
     path('recognition/', views.recognition, name='recognition'),
     path('fst_rec/', views.fst_rec, name='fst_rec'),
     path('api/upload/', views.upload_image_api, name='upload_image_api'),
-    path('api/recognition/', views.recordnition_image_api, name='recordnition_image_api'),
+    path('api/recognition/', views.recognition_image_api, name='recognition_image_api'),
 ]

@@ -34,7 +34,7 @@ from django.http import HttpResponse
 
 
 @csrf_exempt
-def recordnition_image_api(request):
+def recognition_image_api(request):
     time1 = time.time()
     if request.method == 'POST' and request.FILES.get('file'):
         uploaded_image = request.FILES['file']
