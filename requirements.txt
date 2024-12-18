@@ -1,4 +1,4 @@
-tzdata==2024.1
+tzdata==2024.2
 Pillow==9.5.0
 torch==2.5.1
 torchvision==0.18.0
