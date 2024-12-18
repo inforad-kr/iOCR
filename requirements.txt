@@ -3,6 +3,6 @@ Pillow==9.5.0
 torch==2.5.1
 torchvision==0.18.0
 torchaudio==2.3.0
-easyocr==1.7.0
+easyocr==1.7.2
 django==4.2.11
 levenshtein==0.25.1
