@@ -164,7 +164,7 @@ def fst_rec(request):
             image_array = np.array(image)
             
             # result = reader.readtext(image_array, detail=1)
-            result = reader.readtext(image_array, detail=1, allowlist='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-')
+            result = reader.readtext(image_array, detail=1, allowlist='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-', width_ths=0, height_ths=0, ycenter_ths=0, slope_ths=0)
             count = 0
             recognized_imgs = [] 
             for res in result:
