@@ -49,15 +49,26 @@ def recordnition_image_api(request):
         base_name, file_extension = os.path.splitext(original_filename)
         image_array = np.array(image)
         # result = reader.readtext(image_array, detail=1)
-        result = reader.readtext(image_array, detail=1, allowlist='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-')
+        result = reader.readtext(image_array, detail=1, allowlist='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-', width_ths=0,
+                                 height_ths=0, link_threshold=1, low_text=0.5, contrast_ths=0.05, decoder='beamsearch')
         count = 0
-        recognized_imgs = [] 
+        recognized_imgs = []
+        # coordinates = result[0]
+        # x_values, y_values = zip(*coordinates)
+        # left = min(x_values)
+        # upper = min(y_values)
+        # right = max(x_values)
+        # lower = max(y_values)
+        # x_coord = int((right + left) / 2)
+        # y_coord = int((lower + upper) / 2)
+
+        single_char = request.GET.get('single', 'false').lower() == 'true'
         
         result_dict = {
                 'regions_of_interest': [
                     {
                         'coordinates': roi[0],
-                        'text': roi[1],
+                        'text': roi[1][:1] if single_char else roi[1],
                         'confidence': roi[2]
                     }
                     for roi in result
@@ -164,7 +175,7 @@ def fst_rec(request):
             image_array = np.array(image)
             
             # result = reader.readtext(image_array, detail=1)
-            result = reader.readtext(image_array, detail=1, allowlist='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-', width_ths=0, height_ths=0, ycenter_ths=0, slope_ths=0)
+            result = reader.readtext(image_array, detail=1, allowlist='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-', width_ths=0, height_ths=0, link_threshold=1, low_text=0.5, contrast_ths=0.05, decoder='beamsearch')
             count = 0
             recognized_imgs = [] 
             for res in result:
@@ -174,6 +185,8 @@ def fst_rec(request):
                 upper = min(y_values)
                 right = max(x_values)
                 lower = max(y_values)
+                # x_coord = int((right + left) / 2)
+                # y_coord = int((lower + upper) / 2)
                 print(res[1])
                 roi = image.crop((left, upper, right, lower))
                 roi = roi.convert("RGB")
@@ -188,6 +201,10 @@ def fst_rec(request):
                 new_record.parent_pic = original_filename
                 new_record.image_file.save(new_filename, ContentFile(buffer.getvalue()), save=False)
                 new_record.quality = res[2]
+                # content = res[1]
+                # new_record.content = content[0]
+                # new_record.x_coord = x_coord
+                # new_record.y_coord = y_coord
                 new_record.content = res[1]
                 new_record.save()
                 recognized_imgs.append(new_record)
