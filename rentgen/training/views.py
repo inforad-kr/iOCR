@@ -49,15 +49,17 @@ def recognition_image_api(request):
         base_name, file_extension = os.path.splitext(original_filename)
         image_array = np.array(image)
         # result = reader.readtext(image_array, detail=1)
-        result = reader.readtext(image_array, detail=1, allowlist='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-')
+        result = reader.readtext(image_array, detail=1, allowlist='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-', width_ths=0,
+                                 height_ths=0, link_threshold=1, low_text=0.5, contrast_ths=0.05, decoder='beamsearch')
         count = 0
-        recognized_imgs = [] 
+        recognized_imgs = []
+        single_char = request.GET.get('single', 'false').lower() == 'true'
         
         result_dict = {
                 'regions_of_interest': [
                     {
                         'coordinates': roi[0],
-                        'text': roi[1],
+                        'text': roi[1][:1] if single_char else roi[1],
                         'confidence': roi[2]
                     }
                     for roi in result
@@ -164,7 +166,7 @@ def fst_rec(request):
             image_array = np.array(image)
             
             # result = reader.readtext(image_array, detail=1)
-            result = reader.readtext(image_array, detail=1, allowlist='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-', width_ths=0, height_ths=0, ycenter_ths=0, slope_ths=0)
+            result = reader.readtext(image_array, detail=1, allowlist='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-', width_ths=0, height_ths=0, link_threshold=1, low_text=0.5, contrast_ths=0.05, decoder='beamsearch')
             count = 0
             recognized_imgs = [] 
             for res in result:
