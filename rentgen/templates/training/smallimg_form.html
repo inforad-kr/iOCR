@@ -9,13 +9,16 @@
           {% csrf_token %}
           {{ data.form }}
           <input type="submit" value="Upload Image">
+          <label>
+            <input type="checkbox" name="single_rec" {% if single_rec %}checked{% endif %}> Single character recognition
+          </label>
         </form>
         <div>
         {% if data.original_filename %}
           <h3 class="white_h3">Recordnized data for {{ data.original_filename }}</h3>
           {% for img in data.recognized_imgs %}
             <div style="color: white;"> 
-              <img src="{{ img.image_file.url }}" alt="" style="max-width: 100px;"> '{{ img.content }}' {{ img.quality|floatformat:3 }}
+              <img src="{{ img.image_file.url }}" alt="" style="max-width: 100px;"> '{{ img.content }}' {{ img.quality|floatformat:3 }} {{ img.x_coord }} {{ img.y_coord }}
             </div>
           {% endfor %}
         {% endif %}

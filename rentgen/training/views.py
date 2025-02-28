@@ -147,6 +147,7 @@ class NumpyEncoder(JSONEncoder):
 
 def fst_rec(request):
     time1 = time.time()
+    single_rec = False
     if request.method == 'POST':
         form = ImageUploadForm(request.POST, request.FILES)
         if form.is_valid():
@@ -166,7 +167,14 @@ def fst_rec(request):
             image_array = np.array(image)
             
             # result = reader.readtext(image_array, detail=1)
-            result = reader.readtext(image_array, detail=1, allowlist='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-', width_ths=0, height_ths=0, link_threshold=1, low_text=0.5, contrast_ths=0.05, decoder='beamsearch')
+            single_rec = request.POST.get("single_rec")
+            if single_rec:
+                result = reader.readtext(image_array, detail=1, allowlist='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-',
+                                         width_ths=0, height_ths=0, link_threshold=1, low_text=0.5, contrast_ths=0.05,
+                                         decoder='beamsearch')
+            else:
+                result = reader.readtext(image_array, detail=1, allowlist='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-',
+                                         decoder='beamsearch')
             count = 0
             recognized_imgs = [] 
             for res in result:
@@ -208,7 +216,7 @@ def fst_rec(request):
         data = {'form' : form,}
     time2 = time.time()
     print('recognition time ', time2 - time1)
-    return render(request, 'training/smallimg_form.html', {'data': data})
+    return render(request, 'training/smallimg_form.html', {'data': data, 'single_rec': single_rec})
 
 def recognition(request):
     # print('request.method',request.method)
