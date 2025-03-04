@@ -9,6 +9,9 @@
           {% csrf_token %}
           {{ data.form }}
           <input type="submit" value="Upload Image">
+          <label>
+            <input type="checkbox" name="single_rec" {% if single_rec %}checked{% endif %}> Single character recognition
+          </label>
         </form>
         <div>
         {% if data.original_filename %}
