@@ -198,7 +198,10 @@ def fst_rec(request):
                 new_record.parent_pic = original_filename
                 new_record.image_file.save(new_filename, ContentFile(buffer.getvalue()), save=False)
                 new_record.quality = res[2]
-                new_record.content = res[1]
+                if single_rec:
+                    new_record.content = res[1][:1]
+                else:
+                    new_record.content = res[1]
                 new_record.save()
                 recognized_imgs.append(new_record)
             
